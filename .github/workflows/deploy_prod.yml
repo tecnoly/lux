@@ -1,0 +1,62 @@
+name: Deploy Production
+on:
+  push:
+    branches:
+      - main
+jobs:
+  docker:
+    name: Docker Build
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Backend
+        env:
+          GCLOUD_KEY: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo "$GCLOUD_KEY" | base64 -d > ${HOME}/gcloud.json
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
+          gcloud auth configure-docker
+          cd api/ && ls
+          docker build -t "gcr.io/${{ secrets.GCP_PROJECT_ID }}/lux-backend:${{ github.sha }}" .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lux-backend:${{ github.sha }}
+      - name: Frontend
+        env:
+          GCLOUD_KEY: ${{ secrets.GCP_CREDENTIALS }}
+        run: |
+          echo "$GCLOUD_KEY" | base64 -d > ${HOME}/gcloud.json
+          gcloud auth activate-service-account --key-file=${HOME}/gcloud.json
+          gcloud auth configure-docker
+          cd client/ && ls
+          docker build -t "gcr.io/${{ secrets.GCP_PROJECT_ID }}/lux-frontend:${{ github.sha }}" .
+          docker push gcr.io/${{ secrets.GCP_PROJECT_ID }}/lux-frontend:${{ github.sha }}
+  terraform:
+    needs: docker
+    name: Terraform
+    environment: production
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - uses: kvrhdn/tfe-run@v1
+        with:
+          token: ${{ secrets.TFE_TOKEN }}
+          organization: tecnoly
+          workspace: lux
+          message: |
+            Run triggered using tfe-run (commit: ${{ github.SHA }})
+          directory: terraform/
+          type: apply
+          wait-for-completion: true
+          tf-vars: |
+            backend_config = {
+              image_repository = "gcr.io/tecnoly/lux-backend"
+              image_tag        = "${{ github.sha }}"
+            }
+
+            frontend_config = {
+              image_repository = "gcr.io/tecnoly/lux-frontend"
+              image_tag        = "${{ github.sha }}"
+            }
+            credentials_file   = "${{ secrets.GCP_CREDENTIALS }}"
+            project_id         = "${{ secrets.GCP_PROJECT_ID }}"
+            region             = "us-central1"
+            zone               = "us-central1-c"
