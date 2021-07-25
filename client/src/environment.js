@@ -2,8 +2,8 @@
   window.environment = window.environment || {};
 
   switch (window.location.hostname) {
-    case 'localhost1':
-      window.environment.BASE_URL = 'http://localhost:3000/api';
+    case 'localhost':
+      window.environment.BASE_URL = 'http://localhost:3000/v1';
       break;
     default:
       window.environment.BASE_URL = 'http://api.luxdgo.com/v1';

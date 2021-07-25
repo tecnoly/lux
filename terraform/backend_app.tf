@@ -11,6 +11,7 @@ resource "kubernetes_secret" "backend_env" {
     DB_PASSWORD = random_password.db_password.result
     DB_NAME     = google_sql_database.db.name
     NODE_ENV    = "production"
+    SECRET      = var.backend_config.jwt_secret
   }
 }
 
@@ -31,8 +32,8 @@ module "backend_app" {
     # Ingress
     "ingress.enabled"                    = true
     "ingress.hosts[0].host"              = "api.${var.domain}"
-    "ingress.hosts[0].paths[0].path"     = "/"
-    "ingress.hosts[0].paths[0].pathType" = "ImplementationSpecific"
+    "ingress.hosts[0].paths[0].path"     = "/*"
+    "ingress.hosts[0].paths[0].pathType" = "Prefix"
     "ingress.tls[0].secretName"          = "${var.product_name}-backend-secret-tls"
     "ingress.tls[0].hosts[0]"            = "api.${var.domain}"
   }

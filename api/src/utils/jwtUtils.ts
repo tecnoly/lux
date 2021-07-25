@@ -1,7 +1,9 @@
 import jwt, {SignOptions} from "jsonwebtoken";
 
+const secret = process.env.SECRET || "default";
+
 const generateToken = (payload: string | any | Buffer, options: SignOptions) => new Promise((resolve, reject) => {
-    jwt.sign(payload, process.env.SECRET, options || { noTimestamp: true }, (err, token) => {
+    jwt.sign(payload, secret, options || { noTimestamp: true }, (err, token) => {
         if (err) {
             reject(err);
         } else {
@@ -11,7 +13,7 @@ const generateToken = (payload: string | any | Buffer, options: SignOptions) => 
 });
 
 const verifyToken = (token: string) => new Promise(((resolve, reject) => {
-    jwt.verify(token, process.env.SECRET, (err: Error, decoded: any) => {
+    jwt.verify(token, secret, (err: Error, decoded: any) => {
         if (err) {
             reject(err);
         } else {

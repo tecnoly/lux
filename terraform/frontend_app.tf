@@ -10,8 +10,8 @@ module "frontend_app" {
     # Ingress
     "ingress.enabled"                    = true
     "ingress.hosts[0].host"              = "panel.${var.domain}"
-    "ingress.hosts[0].paths[0].path"     = "/"
-    "ingress.hosts[0].paths[0].pathType" = "ImplementationSpecific"
+    "ingress.hosts[0].paths[0].path"     = "/*"
+    "ingress.hosts[0].paths[0].pathType" = "Prefix"
     "ingress.tls[0].secretName"          = "${var.product_name}-frontend-secret-tls"
     "ingress.tls[0].hosts[0]"            = "panel.${var.domain}"
   }

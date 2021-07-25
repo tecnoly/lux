@@ -50,6 +50,7 @@ jobs:
             backend_config = {
               image_repository = "gcr.io/tecnoly/lux-backend"
               image_tag        = "${{ github.sha }}"
+              jwt_secret       = "${{ secrets.JWT_SECRET }}"
             }
 
             frontend_config = {

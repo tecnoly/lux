@@ -41,8 +41,6 @@ async function createApp() {
 
 (async () => {
     try {
-        console.log(`Environment:`)
-        console.log(process.env);
         await createApp();
 
     } catch (e) {

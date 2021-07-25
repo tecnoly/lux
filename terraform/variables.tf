@@ -32,10 +32,12 @@ variable "backend_config" {
   type = object({
     image_repository = string
     image_tag        = string
+    jwt_secret       = string
   })
   default = {
     image_repository = "gcr.io/tecnoly/lux-backend"
     image_tag        = "latest"
+    jwt_secret       = "12345"
   }
 }
 variable "frontend_config" {

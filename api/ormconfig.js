@@ -20,5 +20,5 @@ module.exports = {
     cli: {
         migrationsDir: "migration"
     },
-    connectTimeout: 30000
+    connectTimeout: 3000
 };
