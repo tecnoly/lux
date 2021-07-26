@@ -33,7 +33,7 @@
 	"forwardPorts": [3000, 3306],
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "cd api && yarn install && cd ../client && yarn install && cd .. && gcloud auth activate-service-account --key-file ./credentials.json && gcloud config set project tecnoly && gcloud container clusters get-credentials tecnoly-us-central1-0 -z us-central1-c && kubectl config set-context --current --namespace=lux",
+	"postCreateCommand": "cd api && yarn install && cd ../client && yarn install && cd .. && gcloud auth activate-service-account --key-file ./credentials.json && gcloud config set project tecnoly && gcloud container clusters get-credentials tecnoly-us-central1-0 -z us-central1-c && kubectl config set-context --current --namespace=lux && set -a && source .env && set +a",
 
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "node"
