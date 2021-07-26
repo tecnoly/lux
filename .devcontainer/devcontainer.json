@@ -26,7 +26,8 @@
 	"extensions": [
 		"dbaeumer.vscode-eslint",
 		"cweijan.vscode-mysql-client2",
-		"hashicorp.terraform"
+		"hashicorp.terraform",
+		"cschleiden.vscode-github-actions"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
