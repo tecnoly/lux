@@ -6,7 +6,7 @@
       window.environment.BASE_URL = 'http://localhost:3000/v1';
       break;
     default:
-      window.environment.BASE_URL = 'http://api.luxdgo.com/v1';
+      window.environment.BASE_URL = 'https://api.luxdgo.com/v1';
       break;
   }
 })(this);

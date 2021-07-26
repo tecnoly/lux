@@ -1,6 +1,6 @@
 create database if not exists lux;
 
--- create table user
+-- create table if not exists user
 -- (
 --     createdAt datetime(6) default CURRENT_TIMESTAMP(6) not null,
 --     updatedAt datetime(6) default CURRENT_TIMESTAMP(6) not null,
